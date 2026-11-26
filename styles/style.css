@@ -1,51 +1,500 @@
+/* Общие сбросы */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-html {
-  block-size: 100%;
-}
-
-.page {
-  inline-size: 1200px;
-  block-size: 100%;
-  margin: auto;
-  color: #fff;
-  font-family: 'Fira Sans Condensed', sans-serif;
-  font-size: 18px;
-  background-color: #1b1919;
-}
-
-h1,
-h2,
-h3,
-h4,
-p,
-ul,
-ol,
-li,
-blockquote,
-fieldset {
+body {
   margin: 0;
-  padding: 0;
+  min-width: 800px;
+  min-height: 100vh;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  background-color: #1e1e1e;
+  color: #fff;
 }
 
-ul,
-ol {
+/* Лейаут страницы */
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Левая часть: видео и форма */
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 60%;
+}
+
+/* Правая часть: заголовок и карточки */
+.content__details {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  height: 100%;
+}
+
+/* Контейнер для карточек (скролл) */
+.content__list-container {
+  height: 400px;
+  overflow-y: auto;
+  margin-top: 20px;
+}
+
+/* --- Шаг 2: Размеры видео и карточек --- */
+
+/* Контейнер для видео */
+.result__video-container {
+  width: 100%; /* Видео занимает всю ширину левой колонки */
+  height: 400px; /* Задаем высоту (посмотри в макете, примерно 400-450px) */
+  margin-bottom: 20px; /* Отступ снизу до формы */
+  background-color: #333; /* Временный фон, пока нет видео */
+}
+
+/* Само видео */
+.result__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Видео заполняет контейнер, обрезая лишнее */
+}
+
+/* Отступы между карточками в списке */
+.content__list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* Расстояние между карточками по вертикали */
+  padding: 0;
+  margin: 0;
   list-style: none;
 }
 
-/* Кастомный скроллбар */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 4px;
+/* Отступ между кнопкой "Показать еще" и последней карточкой */
+.content__list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: rgb(217 217 217 / 10%);
+/* Карточка видео (внутри списка) */
+.content__video-card {
+  display: flex;
+  align-items: flex-start; /* Прижимаем элементы к верху */
+  gap: 10px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #D9D9D9;
+/* Миниатюра (картинка) в карточке */
+.content__video-card-thumbnail {
+  width: 120px; /* Ширина картинки */
+  height: 80px; /* Высота картинки */
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0; /* Картинка не сжимается, если текста много */
+}
+
+/* Текстовый контейнер внутри карточки */
+.content__video-card-description-container {
+  flex-grow: 1; /* Текст занимает все оставшееся место */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+/* --- Шаг 3: Стили текстов --- */
+
+/* Заголовок "По-смотри в окно" */
+.title {
+  margin: 0;
+  font-family: 'Oswald', sans-serif; /* Шрифт из макета */
+  font-size: 75px;
+  font-weight: bold;
+  line-height: 0.94;
+  text-transform: uppercase;
+  color: #545050; /* Цвет текста (серый) */
+}
+
+/* Выделенная часть заголовка "По-" */
+.content__accent {
+  color: #fff; /* Белый цвет */
+}
+
+/* Заголовки в форме (Город, Время суток) */
+.search-form__fieldset-title {
+  margin: 0 0 5px 0;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-size: 18px;
+  font-weight: normal;
+  color: #fff;
+}
+
+/* Ссылка на карточку (текст внутри) */
+.content__card-link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Заголовок внутри карточки (название города) */
+.content__video-card-title {
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #fff;
+  /* Обрезаем текст, если он слишком длинный */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Описание внутри карточки */
+.content__video-card-description {
+  margin: 0;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-size: 18px;
+  line-height: 0.9;
+  color: #fff;
+  /* Обрезаем текст до 2 строк */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* --- Шаг 4: Стилизуем формы и их состояния --- */
+
+/* Класс для скрытия элементов (доступен для скринридеров) */
+.visually-hidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Сбрасываем рамку у fieldset */
+.search-form__fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Располагаем чекбоксы в линию */
+.search-form__checkbox-list {
+  display: flex;
+  gap: 15px;
+}
+
+/* Оформляем обертку лейбла (для инпута и чекбоксов) */
+.search-form__label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: fit-content;
+  cursor: pointer;
+}
+
+/* Стилизуем текстовое поле */
+.search-form__textfield {
+  appearance: none;
+  border: none;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  padding: 5px 10px;
+  color: #fff;
+  font-family: inherit;
+  font-size: 18px;
+  background-color: transparent;
+  min-width: 200px;
+}
+
+/* Цвет плейсхолдера */
+.search-form__textfield::placeholder {
+  color: rgb(255 255 255 / 0.7);
+}
+
+/* Стилизация кастомного чекбокса (квадратик) */
+.search-form__pseudo-checkbox {
+  width: 19px;
+  height: 19px;
+  border: 1px solid #fff;
+  padding: 1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Внутренняя заливка чекбокса (появляется при выборе) */
+.search-form__pseudo-checkbox::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  opacity: 0;
+}
+
+/* Показываем заливку, когда чекбокс выбран (checked) */
+.search-form__checkbox:checked + .search-form__pseudo-checkbox::after {
+  opacity: 1;
+}
+
+/* Подчеркивание текста чекбокса при наведении на весь лейбл */
+.search-form__label:hover .search-form__label-text {
+  text-decoration: underline;
+}
+
+/* Фокус на текстовом поле (обводка у лейбла) */
+.search-form__label:has(.search-form__textfield:focus-visible) {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Фокус на чекбоксе (обводка у лейбла) */
+.search-form__label:has(.search-form__checkbox:focus-visible) {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+/* --- Шаг 5: Стилизуем кнопки --- */
+
+/* Общие стили для всех кнопок */
+.button {
+  border: 1px solid #fff;
+  padding: 5px 10px;
+  color: #fff;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  text-transform: uppercase;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+/* Кнопка "Найти" */
+.search-form__submit-button {
+  align-self: flex-end; /* Прижимаем кнопку к низу формы */
+  padding: 5px 20px;
+}
+
+/* Кнопка "Показать ещё" */
+.more-button {
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Состояние при наведении (общее для всех кнопок) */
+.button:hover {
+  text-decoration: underline;
+}
+
+/* Состояние при нажатии (активное) */
+.button:active {
+  background-color: #545050; /* Темно-серый цвет при нажатии */
+}
+
+/* Состояние фокуса (обводка) */
+.button:focus {
+  outline: none; /* Убираем стандартную обводку */
+}
+
+.button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+/* --- Выравниваем форму --- */
+
+/* Сама форма */
+.search-form {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Поля ввода (Город и Время суток) */
+.search-form__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex-grow: 1; /* Поля растягиваются, чтобы заполнить место */
+}
+
+/* Поле "Город" */
+.search-form__label {
+  width: 100%;
+}
+
+.search-form__textfield {
+  width: 100%;
+}
+
+/* Кнопка "Найти" */
+.search-form__submit-button {
+  align-self: flex-end; /* Прижимаем к низу формы */
+  flex-shrink: 0; /* Кнопка не сжимается */
+}
+/* --- Финальные правки для формы --- */
+
+/* Чуть больше отступа между чекбоксами */
+.search-form__checkbox-list {
+  gap: 20px;
+}
+
+/* Делаем текст чекбоксов крупнее */
+.search-form__label-text {
+  font-size: 18px;
+}
+
+/* Добавляем внутренние отступы для поля ввода, чтобы текст не прилипал к линиям */
+.search-form__textfield {
+  padding: 8px 0; /* Добавили вертикальные отступы */
+}
+
+/* Кнопка "Найти" должна быть чуть больше по ширине */
+.search-form__submit-button {
+  padding: 5px 30px;
+}
+/* --- Стилизация карточки --- */
+
+/* Отступы для карточки */
+.content__list-item {
+  padding: 0 3px; /* Небольшой отступ, чтобы рамка фокуса не прилипала */
+}
+
+/* Стилизация ссылки-обертки */
+.content__card-link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+}
+
+/* Подсветка выбранной карточки (текущей) */
+.content__card-link_current {
+  background-color: #545050; /* Темно-серый цвет, как в макете */
+}
+
+/* Стилизация самой карточки (article) */
+.content__video-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Контейнер с текстом */
+.content__video-card-description-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Заголовок (город) */
+.content__video-card-title {
+  margin: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Описание */
+.content__video-card-description {
+  margin: 0;
+  font-family: 'Fira Sans Condensed', sans-serif;
+  font-size: 18px;
+  line-height: 0.9;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Картинка */
+.content__video-card-thumbnail {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0;
+}
+
+/* Рамка при наведении на карточку */
+.content__card-link:hover .content__video-card {
+  outline: 1px solid #fff;
+}
+
+/* Рамка при фокусе */
+.content__card-link:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 2px;
+}
+
+/* Активное состояние (при нажатии) */
+.content__card-link:active {
+  background-color: #545050;
+}
+/* --- Финальная настройка карточки --- */
+
+/* Ограничиваем ширину карточки, чтобы она не растягивалась на всю колонку */
+.content__video-card {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 15px; /* Чуть больше отступов по бокам */
+}
+
+/* Убираем лишнее пространство у контейнера с текстом */
+.content__video-card-description-container {
+  flex-grow: 1;
+  min-width: 0; /* Важно, чтобы текст мог обрезаться, если не влезает */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Делаем картинку аккуратной и с отступами */
+.content__video-card-thumbnail {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center;
+  flex-shrink: 0;
+  margin-left: 10px; /* Отступ от текста до картинки */
+}
+
+/* Убираем выделение фона по умолчанию у ссылки (когда она не выбрана) */
+.content__card-link {
+  display: block;
+  text-decoration: none;
+  color: #fff;
+  background-color: transparent; /* Убедимся, что фон прозрачный */
+}
+
+/* Фон для выбранной карточки (как на макете) */
+.content__card-link_current {
+  background-color: #545050;
+}
+
+/* Отступ между карточками в списке */
+.content__list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Расстояние между карточками */
 }
